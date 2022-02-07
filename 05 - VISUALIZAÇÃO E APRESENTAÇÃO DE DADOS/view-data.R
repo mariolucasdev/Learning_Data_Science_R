@@ -130,3 +130,32 @@ ggplotly(p)
 
 p2<-ggplot(airquality, aes(x=Temp, y=Ozone)) + geom_point() +geom_smooth(method = lm)
 ggplotly(p2)
+
+# Aula Bonus - wordcloud
+letra<-readLines("../Desktop/porque_ele_vive.txt")
+
+install.packages("wordcloud")
+install.packages("tm")
+
+library(wordcloud)
+library(tm)
+
+doc<-Corpus(VectorSource(letra))
+doc<-tm_map(doc, content_transformer(tolower))
+doc<-tm_map(doc, removeNumbers)
+doc<-tm_map(doc, removePunctuation)
+doc<-tm_map(doc, stripWhitespace)
+
+wordcloud(doc)            
+
+doc<-tm_map(doc, removeWords, stopwords('pt'))
+wordcloud(doc)
+
+# Criando uma Matriz com a Frequência de Palavras
+matriz<-TermDocumentMatrix(doc)
+matriz()
+m<-as.matrix(matriz)
+x<-sort(rowSums(m), decreasing = TRUE)
+df<-data.frame(words=names(x), freq=x)
+
+wordcloud(words = df$word, freq = df$freq, min.freq = 2)
