@@ -119,7 +119,14 @@ library(ggpubr)
 ggarrange(p1, p2, p3, ncol= 2, nrow = 2)
 
 #facets
-ggplot(airquality, aes(x=Temp, y=Wind)) +
+p<-ggplot(airquality, aes(x=Temp, y=Wind)) +
   geom_point() +
   geom_smooth(aes(color=Month), se=F, method=lm) +
   facet_grid(Month~.)
+
+
+library(plotly)
+ggplotly(p)
+
+p2<-ggplot(airquality, aes(x=Temp, y=Ozone)) + geom_point() +geom_smooth(method = lm)
+ggplotly(p2)
